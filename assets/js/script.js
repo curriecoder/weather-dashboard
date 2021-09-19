@@ -11,7 +11,6 @@ function getApi() {
     city +
     "&units=imperial&appid=" +
     APIKey;
-  console.log(city);
   var cityName = $("#cityNameDate");
   var today = moment().format("M/D/YYYY");
 
@@ -47,22 +46,26 @@ function getApi() {
           return response.json();
         })
         .then(function (data) {
-          console.log(data);
           uvIndex.text("UV Index: " + data.current.uvi);
+
+          var uviColor = data.current.uvi;
+          console.log(uviColor);
+          if (uviColor < 2) {
+            uvIndex.attr("class", "bg-success");
+          } else if (3 < uviColor < 5) {
+            uvIndex.attr("class", "bg-warning");
+          } else if (6 < uviColor < 7) {
+            uvIndex.attr("class", "bg-orange");
+          } else if (8 < uviColor < 10) {
+            uvIndex.attr("class", "bg-danger");
+          } else if (uviColor > 10) {
+            uvIndex.attr("class", "bg-violet");
+          }
+          
+          
         });
     });
 }
+
 searchButton.on("click", getApi);
-// stopping here for the night, not seeing uvIndex value here so can't change bg color.
-console.log(uvIndex.val());
 
-function uviEval() {
-  if (uvIndex.val() < 2) {
-    uvIndex.addClass("bg-success");
-    console.log(uvIndex.val());
-  } else if (uvIndex.val() >= 3) {
-    uvIndex.addClass("bg-warning");
-  }
-}
-
-uviEval();
