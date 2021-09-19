@@ -12,11 +12,14 @@
       integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
       crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="./assets/css/style.css">
   </head>
 
   <body>
     <header class="container-fluid">
-      <h2 class="row justify-content-center bg-primary text-white p-2">Five-Day Forecaster</h2>
+      <h2 class="row justify-content-center bg-primary text-white p-2">
+        Five-Day Forecaster
+      </h2>
     </header>
     <div class="container">
       <div class="row">
@@ -24,21 +27,24 @@
           <!-- div for search bar -->
           <h3>Search for a City:</h3>
           <div>
-            <input type="text" placeholder="New York" />
-            <button id="searchBtn" class="rounded btn btn-info btn-block">Search</button>
+            <input type="text" placeholder="London" />
+            <button id="searchBtn" class="rounded btn btn-info btn-block">
+              Search
+            </button>
           </div>
         </div>
 
         <div class="col-9">
           <!-- div for selected city -->
-          <!-- dynamic content??? -->
-          <h3>Atlanta (3/30/2021)</h3>
+          <!-- dynamic content -->
+          <!-- need moment() for current date -->
+          <h3 id="cityNameDate"></h3>
           <div>
             <ul>
-              <li>Temp: 71.01 deg F</li>
-              <li>Wind: 6.67 MPH</li>
-              <li>Humidity: 46%</li>
-              <li>UV Index: color coded number box</li>
+              <li id="temp"></li>
+              <li id="wind"></li>
+              <li id="humidity"></li>
+              <li id="uvIndex"></li>
             </ul>
           </div>
           <div>
@@ -59,6 +65,12 @@
       src="https://code.jquery.com/jquery-3.6.0.min.js"
       integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
       crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"
+      integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
     ></script>
     <script src="./assets/js/script.js"></script>
   </body>
