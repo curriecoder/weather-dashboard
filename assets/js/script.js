@@ -2,10 +2,22 @@ var APIKey = "66547e9042ab360b2c2f1ef36d0552f5";
 var searchButton = $("#searchBtn");
 var uvIndex = $("#uvIndex");
 
+
+renderHistory();
+
+function renderHistory() {
+  var storedArr = JSON.parse(localStorage.getItem('historyArr'));
+  console.log(storedArr);
+  if (storedArr !== null) {
+    historyArr = storedArr;
+    $('#history').html(historyArr);
+  }
+}
+
 // returns city name from input field and makes request for weather.
 function getApi() {
   // fetch request gets a list of all the repos for the node.js organization
-  var city = $("input").val();
+  var city = $('input').val();
   var requestUrl =
     "http://api.openweathermap.org/data/2.5/weather?q=" +
     city +
@@ -15,7 +27,7 @@ function getApi() {
   var today = moment().format("M/D/YYYY");
 
   cityName.text(city + " " + "(" + today + ")");
-  console.log(city);
+  
   fetch(requestUrl)
     .then(function (response) {
       return response.json();
@@ -32,7 +44,7 @@ function getApi() {
       temp.text("Temp: " + data.main.temp + "°F");
       wind.text("Wind: " + data.wind.speed + "mph");
       humidity.text("Humidity: " + data.main.humidity + "%");
-      
+
       var requestUrlUV =
         "http://api.openweathermap.org/data/2.5/onecall?&units=imperial&lat=" +
         lat +
@@ -60,54 +72,39 @@ function getApi() {
           } else if (uviColor > 10) {
             uvIndex.attr("class", "bg-violet text-white");
           }
-          
+
           var wf = ""; // start here for refactoring
           wf += "<b>" + city + "</b>"; // City (displays once)
           $.each(data.daily, function (index, val) {
             if (index < 5) {
               wf += "<p>"; // Opening paragraph tag
               wf += "<b>Day " + (index + 1) + "</b>: "; // Day
-              wf += val.temp.day + "&degF";  
-              wf += "<span> | " + val.weather[0].description + "</span>"; // Description
+              wf += "Temp: " + val.temp.day + "&degF | ";
+              wf += "Wind: " + val.wind_speed + " mph | ";
+              wf += "Humidity: " + val.humidity + "%";
               wf +=
-              '<img src= "https://openweathermap.org/img/wn/' + //good link format
-              val.weather[0].icon +
-              '@2x.png">'; // Icon
+                '<img src= "https://openweathermap.org/img/wn/' + //good link format
+                val.weather[0].icon +
+                '@2x.png">'; // Icon
+              wf += "<span>" + val.weather[0].description + "</span>"; // Description
               wf += "</p>"; // Closing paragraph tag
             }
           });
-          $('#forecast').html(wf);
-          
+          $("#forecast").html(wf);
+          history();
         });
-
-      // var requestUrl5Day = // TODO: we don't need to make an additional call here anymore.
-      //   "http://api.openweathermap.org/data/2.5/forecast?q=" +
-      //   city +
-      //   "&cnt=5&units=imperial&appid=" +
-      //   APIKey;
-
-      // fetch(requestUrl5Day)
-      //   .then(function (response) {
-      //     return response.json();
-      //   })
-      //   .then(function (data) {
-      //     console.log(data);
-      //     var wf = ""; // start here for refactoring
-      //     wf += data.city.name; // City (displays once)
-      //     $.each(data.list, function (index, val) {
-      //       wf += "<p>"; // Opening paragraph tag
-      //       wf += "<b>Day " + (index + 1) + "</b>: "; // Day
-      //       wf += val.main.temp + "&degF"; // Temperature
-      //       wf += "<span> | " + val.weather[0].description + "</span>"; // Description
-      //       wf +=
-      //       '<img src= "https://openweathermap.org/img/wn/' + //good link format
-      //       val.weather[0].icon +
-      //       '@2x.png">'; // Icon
-      //       wf += "</p>"; // Closing paragraph tag
-      //     });
-      //     $('#forecast').html(wf);
-        // });
     });
+}
+
+//after a search is made I want to create a button and add it to the history list.
+var historyArr = [];
+
+function history() {
+  var historyCity = $('input').val();
+  historyArr.push('<div><button>' + historyCity + '</div></button>');
+  localStorage.setItem('historyArr', JSON.stringify(historyArr));
+  console.log(historyArr);
+  $('#history').html(historyArr);
 }
 
 searchButton.on("click", getApi);
