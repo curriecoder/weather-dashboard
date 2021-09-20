@@ -77,16 +77,17 @@ function getApi() {
           var wf = ""; // start here for refactoring
           wf += data.city.name; // City (displays once)
           $.each(data.list, function (index, val) {
-            wf += " Day " + index + ","; // Day
-            wf += " Temperature: " + val.main.temp + " °F,"; // Temperature
-            wf += " Weather " + val.weather[0].description + ", "; // Description
+            wf += "<p>"; // Opening paragraph tag
+            wf += "<b>Day " + index + "</b>: "; // Day
+            wf += val.main.temp + "&degF"; // Temperature
+            wf += "<span> | " + val.weather[0].description + "</span>"; // Description
             wf +=
-              '<img src= "https://openweathermap.org/img/wn/' + //good link format
-              val.weather[0].icon +
-              '@2x.png">'; // Icon
-            console.log(wf);
-            $('#forecast').text(wf);
+            '<img src= "https://openweathermap.org/img/wn/' + //good link format
+            val.weather[0].icon +
+            '@2x.png">'; // Icon
+            wf += "</p>"; // Closing paragraph tag
           });
+          $('#forecast').html(wf);
         });
     });
 }
