@@ -32,13 +32,13 @@ function getApi() {
       temp.text("Temp: " + data.main.temp + "°F");
       wind.text("Wind: " + data.wind.speed + "mph");
       humidity.text("Humidity: " + data.main.humidity + "%");
-
+      
       var requestUrlUV =
-        "http://api.openweathermap.org/data/2.5/onecall?lat=" +
+        "http://api.openweathermap.org/data/2.5/onecall?&units=imperial&lat=" +
         lat +
         "&lon=" +
         lon +
-        "&exclude=hourly,minutely,daily,alerts&appid=" +
+        "&appid=" +
         APIKey;
 
       fetch(requestUrlUV)
@@ -47,7 +47,7 @@ function getApi() {
         })
         .then(function (data) {
           uvIndex.text("UV Index: " + data.current.uvi);
-
+          console.log(data);
           var uviColor = data.current.uvi;
           if (uviColor < 2) {
             uvIndex.attr("class", "bg-success text-white");
@@ -60,35 +60,53 @@ function getApi() {
           } else if (uviColor > 10) {
             uvIndex.attr("class", "bg-violet text-white");
           }
-        });
-
-      var requestUrl5Day =
-        "http://api.openweathermap.org/data/2.5/forecast?q=" +
-        city +
-        "&cnt=5&units=imperial&appid=" +
-        APIKey;
-
-      fetch(requestUrl5Day)
-        .then(function (response) {
-          return response.json();
-        })
-        .then(function (data) {
-          console.log(data);
+          
           var wf = ""; // start here for refactoring
-          wf += data.city.name; // City (displays once)
-          $.each(data.list, function (index, val) {
-            wf += "<p>"; // Opening paragraph tag
-            wf += "<b>Day " + index + "</b>: "; // Day
-            wf += val.main.temp + "&degF"; // Temperature
-            wf += "<span> | " + val.weather[0].description + "</span>"; // Description
-            wf +=
-            '<img src= "https://openweathermap.org/img/wn/' + //good link format
-            val.weather[0].icon +
-            '@2x.png">'; // Icon
-            wf += "</p>"; // Closing paragraph tag
+          wf += "<b>" + city + "</b>"; // City (displays once)
+          $.each(data.daily, function (index, val) {
+            if (index < 5) {
+              wf += "<p>"; // Opening paragraph tag
+              wf += "<b>Day " + (index + 1) + "</b>: "; // Day
+              wf += val.temp.day + "&degF";  
+              wf += "<span> | " + val.weather[0].description + "</span>"; // Description
+              wf +=
+              '<img src= "https://openweathermap.org/img/wn/' + //good link format
+              val.weather[0].icon +
+              '@2x.png">'; // Icon
+              wf += "</p>"; // Closing paragraph tag
+            }
           });
           $('#forecast').html(wf);
+          
         });
+
+      // var requestUrl5Day = // TODO: we don't need to make an additional call here anymore.
+      //   "http://api.openweathermap.org/data/2.5/forecast?q=" +
+      //   city +
+      //   "&cnt=5&units=imperial&appid=" +
+      //   APIKey;
+
+      // fetch(requestUrl5Day)
+      //   .then(function (response) {
+      //     return response.json();
+      //   })
+      //   .then(function (data) {
+      //     console.log(data);
+      //     var wf = ""; // start here for refactoring
+      //     wf += data.city.name; // City (displays once)
+      //     $.each(data.list, function (index, val) {
+      //       wf += "<p>"; // Opening paragraph tag
+      //       wf += "<b>Day " + (index + 1) + "</b>: "; // Day
+      //       wf += val.main.temp + "&degF"; // Temperature
+      //       wf += "<span> | " + val.weather[0].description + "</span>"; // Description
+      //       wf +=
+      //       '<img src= "https://openweathermap.org/img/wn/' + //good link format
+      //       val.weather[0].icon +
+      //       '@2x.png">'; // Icon
+      //       wf += "</p>"; // Closing paragraph tag
+      //     });
+      //     $('#forecast').html(wf);
+        // });
     });
 }
 
