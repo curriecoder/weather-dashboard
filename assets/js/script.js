@@ -2,29 +2,29 @@ var APIKey = "66547e9042ab360b2c2f1ef36d0552f5";
 var searchButton = $("#searchBtn");
 var uvIndex = $("#uvIndex");
 
-
 renderHistory();
 
 function renderHistory() {
-  var storedArr = JSON.parse(localStorage.getItem('historyArr'));
-  console.log(storedArr);
+  var storedArr = JSON.parse(localStorage.getItem("historyArr"));
   if (storedArr !== null) {
     historyArr = storedArr;
-    $('#history').html(historyArr);
+    $("#history").html(historyArr);
   }
+}
+
+function clearText() {
+  $('input').val("");
 }
 
 // returns city name from input field and makes request for weather.
 function getApi(city2) {
   // fetch request gets a list of all the repos for the node.js organization
-  console.log(city2);
-  var city = $('input').val();
+  var city = $("input").val();
+  console.log(city);
   //if input comes from input feild then create a button.
   if (city.length === 0) {
     city = city2;
   }
-
-  console.log(city);
   var requestUrl =
     "http://api.openweathermap.org/data/2.5/weather?q=" +
     city +
@@ -34,14 +34,12 @@ function getApi(city2) {
   var today = moment().format("M/D/YYYY");
 
   cityName.text(city + " " + "(" + today + ")");
-  
+
   fetch(requestUrl)
     .then(function (response) {
       return response.json();
     })
     .then(function (data) {
-      console.log(data);
-
       var temp = $("#temp");
       var wind = $("#wind");
       var humidity = $("#humidity");
@@ -85,20 +83,22 @@ function getApi(city2) {
           $.each(data.daily, function (index, val) {
             if (index < 5) {
               wf += "<p>"; // Opening paragraph tag
-              wf += "<b>Day " + (index + 1) + "</b>: "; // Day
-              wf += "Temp: " + val.temp.day + "&degF | ";
-              wf += "Wind: " + val.wind_speed + " mph | ";
-              wf += "Humidity: " + val.humidity + "%";
+              wf += "<b>Day " + (index + 1) + ":</b><br> "; // Day
               wf +=
                 '<img src= "https://openweathermap.org/img/wn/' + //good link format
                 val.weather[0].icon +
-                '@2x.png">'; // Icon
-              wf += "<span>" + val.weather[0].description + "</span>"; // Description
+                '@2x.png"><br>'; // Icon
+              wf += "<span>" + val.weather[0].description + "</span><br>"; // Description
+              wf += "<b>Temp: " + val.temp.day + "&degF</b><br> ";
+              wf += "<b>Wind: " + val.wind_speed + " mph</b><br>";
+              wf += "<b>Humidity: " + val.humidity + "%</b>";
               wf += "</p>"; // Closing paragraph tag
             }
           });
           $("#forecast").html(wf);
           history();
+          clearText();
+          
         });
     });
 }
@@ -107,22 +107,21 @@ function getApi(city2) {
 var historyArr = [];
 
 function history() {
-  var historyCity = $('input').val();
-  historyArr.push('<div><button>' + historyCity + '</div></button>');
-  localStorage.setItem('historyArr', JSON.stringify(historyArr));
-  console.log(historyArr);
-  $('#history').html(historyArr);
+  var historyCity = $("input").val();
+  if (historyCity.length === 0) {
+    return;
+  }
+  historyArr.push("<div><button>" + historyCity + "</div></button>");
+  localStorage.setItem("historyArr", JSON.stringify(historyArr));
+  $("#history").html(historyArr);
 }
-
 
 searchButton.on("click", getApi);
 
-$('#history').on("click", histortySearch);
+$("#history").on("click", histortySearch);
 
 function histortySearch(event) {
   event.preventDefault();
-  var historyButton = $(event.target)
-  console.log(historyButton);
-  getApi(historyButton.text())
+  var historyButton = $(event.target);
+  getApi(historyButton.text());
 }
-
