@@ -6,7 +6,7 @@ Deployed: https://curriecoder.github.io/weather-dashboard/
 
 ## Description
 
-This project was motivated by a desire to illustrate moment.js, javascript interactive elements, dynamic HTML content with CSS manipulation, and API calls in order to render data from a server. This project allows users to view the current date and setup events by hour. I learned how important it is to use innerHTML when you are dynamically generating text that needs to be read as code on this project.
+This project was motivated by a desire to illustrate moment.js, javascript interactive elements, dynamic HTML content with CSS manipulation, and API calls in order to render data from a server. This project allows users to view the current weather for a given city. I learned how important it is to use innerHTML when you are dynamically generating text that needs to be read as code on this project.
 
 ## Usage
 
