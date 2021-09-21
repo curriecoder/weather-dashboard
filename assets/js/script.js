@@ -15,9 +15,16 @@ function renderHistory() {
 }
 
 // returns city name from input field and makes request for weather.
-function getApi() {
+function getApi(city2) {
   // fetch request gets a list of all the repos for the node.js organization
+  console.log(city2);
   var city = $('input').val();
+  //if input comes from input feild then create a button.
+  if (city.length === 0) {
+    city = city2;
+  }
+
+  console.log(city);
   var requestUrl =
     "http://api.openweathermap.org/data/2.5/weather?q=" +
     city +
@@ -60,8 +67,7 @@ function getApi() {
         .then(function (data) {
           uvIndex.text("UV Index: " + data.current.uvi);
           console.log(data);
-          // var uviColor = data.current.uvi;
-          var uviColor = 6;
+          var uviColor = data.current.uvi;
           if (uviColor <= 2) {
             uvIndex.attr("class", "bg-success text-white");
           } else if (uviColor <= 3 && uviColor <= 5) {
@@ -108,4 +114,15 @@ function history() {
   $('#history').html(historyArr);
 }
 
+
 searchButton.on("click", getApi);
+
+$('#history').on("click", histortySearch);
+
+function histortySearch(event) {
+  event.preventDefault();
+  var historyButton = $(event.target)
+  console.log(historyButton);
+  getApi(historyButton.text())
+}
+
