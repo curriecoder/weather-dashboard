@@ -60,14 +60,15 @@ function getApi() {
         .then(function (data) {
           uvIndex.text("UV Index: " + data.current.uvi);
           console.log(data);
-          var uviColor = data.current.uvi;
-          if (uviColor < 2) {
+          // var uviColor = data.current.uvi;
+          var uviColor = 6;
+          if (uviColor <= 2) {
             uvIndex.attr("class", "bg-success text-white");
-          } else if (3 < uviColor < 5) {
+          } else if (uviColor <= 3 && uviColor <= 5) {
             uvIndex.attr("class", "bg-warning text-white");
-          } else if (6 < uviColor < 7) {
+          } else if (uviColor <= 6 && uviColor <= 7) {
             uvIndex.attr("class", "bg-orange text-white");
-          } else if (8 < uviColor < 10) {
+          } else if (uviColor <= 8 && uviColor <= 10) {
             uvIndex.attr("class", "bg-danger text-white");
           } else if (uviColor > 10) {
             uvIndex.attr("class", "bg-violet text-white");
