@@ -17,17 +17,16 @@
 
   <body>
     <header class="container-fluid">
-      <h2 class="row justify-content-center bg-primary text-white p-2">
-        Five-Day Forecaster
-      </h2>
+      <h1 class="row justify-content-center p-2 border-bottom border-white">
+        Five-Day Forecaster</h1>
     </header>
     <div class="container">
       <div class="row">
-        <div class="col-3">
+        <div class="col-3 p-2">
           <!-- div for search bar -->
-          <h3>Search for a City:</h3>
+          <h3>Search a City:</h3>
           <div>
-            <input type="text" placeholder="London" />
+            <input class="w-100" type="text" placeholder="London" />
             <button id="searchBtn" class="rounded btn btn-info w-100">
               Search
             </button>
@@ -36,26 +35,24 @@
           </div>
         </div>
 
-        <div class="col-9">
+        <div class="col-9 p-3">
           <!-- div for selected city -->
           <!-- dynamic content -->
           <!-- need moment() for current date -->
           <h3 id="cityNameDate"></h3>
           <div>
-            <ul>
-              <li id="temp"></li>
-              <li id="wind"></li>
-              <li id="humidity"></li>
-              <li id="uvIndex"></li>
+            <ul class="w-25">
+              <li id="temp" class="text-white"></li>
+              <li id="wind" class="text-white"></li>
+              <li id="humidity" class="text-white"></li>
+              <li id="uvIndex" class="text-white"></li>
             </ul>
           </div>
           <div>
-            <!-- div for 5 day forecast -->
-            <h4>5-Day Forecast:</h4>
-            <div>
+          <!-- div for 5 day forecast -->
+            <h3>5-Day Forecast:</h3>
+            <div class="row align-items-center">
               <p id="forecast">
-                Five cards for forecast with date, icon, temp, wind, and
-                humidity
               </p>
             </div>
           </div>

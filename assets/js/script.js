@@ -2,8 +2,6 @@ var APIKey = "66547e9042ab360b2c2f1ef36d0552f5";
 var searchButton = $("#searchBtn");
 var uvIndex = $("#uvIndex");
 
-renderHistory();
-
 function renderHistory() {
   var storedArr = JSON.parse(localStorage.getItem("historyArr"));
   if (storedArr !== null) {
@@ -12,18 +10,18 @@ function renderHistory() {
   }
 }
 
+renderHistory();
+
 function clearText() {
-  $('input').val("");
+  $("input").val("");
 }
 
 // returns city name from input field and makes request for weather.
-function getApi(city2) {
+function getApi(cityPast) {
   // fetch request gets a list of all the repos for the node.js organization
   var city = $("input").val();
-  console.log(city);
-  //if input comes from input feild then create a button.
   if (city.length === 0) {
-    city = city2;
+    city = cityPast;
   }
   var requestUrl =
     "http://api.openweathermap.org/data/2.5/weather?q=" +
@@ -64,7 +62,6 @@ function getApi(city2) {
         })
         .then(function (data) {
           uvIndex.text("UV Index: " + data.current.uvi);
-          console.log(data);
           var uviColor = data.current.uvi;
           if (uviColor <= 2) {
             uvIndex.attr("class", "bg-success text-white");
@@ -79,16 +76,21 @@ function getApi(city2) {
           }
 
           var wf = ""; // start here for refactoring
-          wf += "<b>" + city + "</b>"; // City (displays once)
           $.each(data.daily, function (index, val) {
             if (index < 5) {
-              wf += "<p>"; // Opening paragraph tag
-              wf += "<b>Day " + (index + 1) + ":</b><br> "; // Day
+              wf +=
+                "<p class='d-inline-block p-4 bg-dark text-white border border-secondary'>"; // Opening paragraph tag
+              wf += "<b>Day " + (index + 1) + "</b><br> "; // Day
               wf +=
                 '<img src= "https://openweathermap.org/img/wn/' + //good link format
                 val.weather[0].icon +
                 '@2x.png"><br>'; // Icon
-              wf += "<span>" + val.weather[0].description + "</span><br>"; // Description
+              wf +=
+                "<span>" +
+                '"' +
+                val.weather[0].description +
+                '"' +
+                "</span><br>"; // Description
               wf += "<b>Temp: " + val.temp.day + "&degF</b><br> ";
               wf += "<b>Wind: " + val.wind_speed + " mph</b><br>";
               wf += "<b>Humidity: " + val.humidity + "%</b>";
@@ -98,7 +100,6 @@ function getApi(city2) {
           $("#forecast").html(wf);
           history();
           clearText();
-          
         });
     });
 }
@@ -106,12 +107,17 @@ function getApi(city2) {
 //after a search is made I want to create a button and add it to the history list.
 var historyArr = [];
 
+// Only if input comes from input feild then create a button.
 function history() {
   var historyCity = $("input").val();
   if (historyCity.length === 0) {
     return;
   }
-  historyArr.push("<div><button>" + historyCity + "</div></button>");
+  historyArr.push(
+    "<div><button class='btn btn-outline-light w-100'>" +
+      historyCity +
+      "</div></button>"
+  );
   localStorage.setItem("historyArr", JSON.stringify(historyArr));
   $("#history").html(historyArr);
 }
