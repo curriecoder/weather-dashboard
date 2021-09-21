@@ -24,7 +24,7 @@ function getApi(cityPast) {
     city = cityPast;
   }
   var requestUrl =
-    "http://api.openweathermap.org/data/2.5/weather?q=" +
+    "https://api.openweathermap.org/data/2.5/weather?q=" +
     city +
     "&units=imperial&appid=" +
     APIKey;
@@ -49,7 +49,7 @@ function getApi(cityPast) {
       humidity.text("Humidity: " + data.main.humidity + "%");
 
       var requestUrlUV =
-        "http://api.openweathermap.org/data/2.5/onecall?&units=imperial&lat=" +
+        "https://api.openweathermap.org/data/2.5/onecall?&units=imperial&lat=" +
         lat +
         "&lon=" +
         lon +
